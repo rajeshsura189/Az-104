@@ -1,1 +1,26 @@
+Types of storage accounts
+---------------------------
+Genreal puprose V2 ---- Lrs, GRS, (RA-GRS),ZRS,GZRS),RA-GZRS)
+Premium block blobs3-- LRS, ZRS
+Premium file shares3 LRS, ZRS
+Premium page blobs3  LRS, ZRS 
+-------------------------------
+1 Data Lake Storage is a set of capabilities dedicated to big data analytics, built on Azure Blob Storage. For more information, see Introduction to Data Lake Storage Gen2 and Create a storage account to use with Data Lake Storage Gen2.
 
+2 ZRS, GZRS, and RA-GZRS are available only for standard general-purpose v2, premium block blobs, and premium file shares accounts in certain regions. For more information, see Azure Storage redundancy.
+
+3 Premium performance storage accounts use solid-state drives (SSDs) for low latency and high throughput.
+
+Legacy storage accounts are also supported. For more information, see Legacy storage account types.
+
+The service-level agreement (SLA) for Azure Storage accounts is available at SLA for Storage Accounts.
+
+How to isolate latency issue for Azure Storage Account
+--------------
+https://techcommunity.microsoft.com/t5/azure-paas-blog/how-to-isolate-latency-issue-for-azure-storage-account/ba-p/1430656
+
+Before, we understand how to troubleshoot the latency issue, let us understand what Server Latency and E2E Latency is:
+
+End-to-end (E2E) latency : It measures the interval from when Azure Storage Server receives the first packet of the request until Azure Storage Server receives a client acknowledgment on the last packet of the response. In simpler terms it means the round trip of any operation starting at the client application, plus the time taken for processing the request at Storage Server and then coming back to the client application.
+Server latency: It measures the interval from when Azure Storage Server receives the last packet of the request until the first packet of the response is returned from Azure Storage Server. In simpler terms, it means the time taken by the Storage Sever to process any given request.
+The first starting point to identify any latency issue, is to check the metrices available on the Portal for the storage account. Navigate to the storage account -> Go to the Metrices tab -> Select the metric values depending on which Storage Service you are using. For example, I am making use of the Blob Service for selecting the metric values:
