@@ -24,3 +24,12 @@ Before, we understand how to troubleshoot the latency issue, let us understand w
 End-to-end (E2E) latency : It measures the interval from when Azure Storage Server receives the first packet of the request until Azure Storage Server receives a client acknowledgment on the last packet of the response. In simpler terms it means the round trip of any operation starting at the client application, plus the time taken for processing the request at Storage Server and then coming back to the client application.
 Server latency: It measures the interval from when Azure Storage Server receives the last packet of the request until the first packet of the response is returned from Azure Storage Server. In simpler terms, it means the time taken by the Storage Sever to process any given request.
 The first starting point to identify any latency issue, is to check the metrices available on the Portal for the storage account. Navigate to the storage account -> Go to the Metrices tab -> Select the metric values depending on which Storage Service you are using. For example, I am making use of the Blob Service for selecting the metric values:
+------------------------------------------------------------
+Public Preview: Create additional 5000 Azure Storage accounts within your Subscription
+
+https://techcommunity.microsoft.com/t5/azure-storage-blog/public-preview-create-additional-5000-azure-storage-accounts/ba-p/3465466
+
+------------------------------------------------------------------------------------------
+Introduction to Azure Blob Storage
+
+https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
