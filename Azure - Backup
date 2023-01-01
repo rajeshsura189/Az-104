@@ -11,3 +11,39 @@ https://www.andyroberts.nz/posts/azure-backup/ ------------ usefull
 https://www.powershellbros.com/clear-resources-in-azure-subscription/
 https://thesystemcenterblog.wordpress.com/2020/02/29/guide-azure-backup-backing-up-an-azure-vm-with-azure-portal-azure-powershell/
 http://vcloud-lab.com/files/documents/1aeca2b7-140b-4918-803f-b1305d3ca2b7.ps1
+
+
+Connect-AzAccount
+Set-AzContext -Subscription sub-jda-cld-solutions-01
+
+$master= Import-Csv -path "C:\Users\1028218\Desktop\Rajesh\EnabledBackup1.csv"
+
+foreach ($data in $master)
+{
+$resourceGroups = $data.RESOURCEGROUP    
+$Vault = $data.VaultName
+$vaultRG = $data.VaultRG
+$Policy =$data.Policy
+$locations = $data.LOCATION
+$vmname = $data.NAME
+
+$target = Get-AzRecoveryServicesVault -ResourceGroupName $vaultRG -Name $Vault | 
+Set-AzRecoveryServicesVaultContext -ErrorAction Stop
+
+        $Pol = Get-AzRecoveryServicesBackupProtectionPolicy -Name $Policy
+        Enable-AzRecoveryServicesBackupProtection -Policy $pol -Name $vmname -ResourceGroupName $resourceGroups -ErrorAction Stop
+        #Triggering a Backup
+        Write-Host "Fetching the Recovery Services Backup Container"
+        $namedContainer = Get-AzRecoveryServicesBackupContainer -ContainerType "AzureVM" -Status "Registered" -FriendlyName $vmname
+        Write-Host "Fetching the Recovery Services Backup Item"
+        $item = Get-AzRecoveryServicesBackupItem -Container $namedContainer -WorkloadType "AzureVM"
+        Write-Host "Triggering a Backup on the VMName ($vmname)"
+        $job = Backup-AzRecoveryServicesBackupItem -Item $item
+}
+#Get Job Status
+while((get-job|select state).state -contains "Running")
+{
+$a=get-job|Where-Object {$_.State -eq "Running"}
+Write-Host "`nPending Jobs - $($a.count)"
+sleep 15
+}
