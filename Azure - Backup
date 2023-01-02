@@ -13,6 +13,10 @@ https://thesystemcenterblog.wordpress.com/2020/02/29/guide-azure-backup-backing-
 http://vcloud-lab.com/files/documents/1aeca2b7-140b-4918-803f-b1305d3ca2b7.ps1
 https://buildwindows.wordpress.com/tag/azure-backup/
 https://www.cloudcompute.info/setup-virtual-machine-backup-in-azure-devops-pipeline-using-powershell/
+
+https://thesystemcenterblog.wordpress.com/2020/03/04/deep-dive-into-the-azure-backup-explorer/
+
+---------------------------------------------------------------------------------------------------------------------
 Connect-AzAccount
 Set-AzContext -Subscription sub-jda-cld-solutions-01
 
