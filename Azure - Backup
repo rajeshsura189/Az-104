@@ -12,7 +12,7 @@ https://www.powershellbros.com/clear-resources-in-azure-subscription/
 https://thesystemcenterblog.wordpress.com/2020/02/29/guide-azure-backup-backing-up-an-azure-vm-with-azure-portal-azure-powershell/
 http://vcloud-lab.com/files/documents/1aeca2b7-140b-4918-803f-b1305d3ca2b7.ps1
 https://buildwindows.wordpress.com/tag/azure-backup/
-
+https://www.cloudcompute.info/setup-virtual-machine-backup-in-azure-devops-pipeline-using-powershell/
 Connect-AzAccount
 Set-AzContext -Subscription sub-jda-cld-solutions-01
 
