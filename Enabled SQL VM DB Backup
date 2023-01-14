@@ -1,0 +1,22 @@
+connect-azaccount
+Set-AzContext -Subscription sub-jda-cld-solutions-01
+
+$Master = Import-Csv -Path "C:\Users\LENOVO\Downloads\db1.csv"
+foreach ($data in $Master){
+$SQLName = $data.VMNAME
+$DBName = $data.DBNAME
+$policy = $data.POLICYNAME
+$vault = $data.VAULTNAME
+$RG = $data.RESOURCEGROUP
+
+
+$vault = Get-AzRecoveryServicesVault -ResourceGroupName $RG -Name $vault
+Set-AzRecoveryServicesVaultContext -Vault $vault
+$DBP = Get-AzRecoveryServicesBackupProtectionPolicy -Name $policy
+$cons = Get-AzRecoveryServicesBackupContainer -ContainerType AzureVMAppContainer -VaultId $vault.ID | ?{$_.FriendlyName -eq "praa050403001"}
+Initialize-AzRecoveryServicesBackupProtectableItem -Container $cons -WorkloadType MSSQL -VaultId $vault.ID
+$items = Get-AzRecoveryServicesBackupItem -Container $cons -WorkloadType MSSQL -ProtectionState ProtectionStopped -VaultId $vault.ID
+foreach ($item in $items){
+Enable-AzRecoveryServicesBackupProtection -Item $item -Policy $DBP
+}
+}
