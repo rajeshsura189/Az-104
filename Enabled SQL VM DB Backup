@@ -20,3 +20,24 @@ foreach ($item in $items){
 Enable-AzRecoveryServicesBackupProtection -Item $item -Policy $DBP
 }
 }
+
+--------------------------------------------------------------------------------------------------------------------
+set-azcontext -Subscription sub-jda-cld-solutions-01 
+$Master = Import-Csv -Path "C:\Users\LENOVO\Downloads\db1.csv"
+foreach ($data in $Master){
+$SQLName = $data.VMNAME
+$DBName = $data.DBNAME
+$policy = $data.POLICYNAME
+$vault = $data.VAULTNAME
+$RG = $data.RESOURCEGROUP
+
+$vault = Get-AzRecoveryServicesVault -Name $vault -ResourceGroupName $RG
+$pols = Get-AzRecoveryServicesBackupProtectionPolicy -VaultId $vault.ID -WorkloadType MSSQL -BackupManagementType AzureWorkload | ?{$_.Name -eq "$policy"}
+$targetPolicy = Get-AzRecoveryServicesBackupProtectionPolicy -VaultId $vault.ID -Name $pols.Name
+
+$containers = Get-AzRecoveryServicesBackupContainer -VaultId $vault.ID -ContainerType AzureVMAppContainer | ?{$_.Name -eq "VMAppContainer;Compute;rg-aa05-04-pr1-eus2;$SQLName"}
+$bkpItems = Get-AzRecoveryServicesBackupItem -WorkloadType MSSQL -VaultId $vault.ID -Container $containers | ?{$_.Name -eq "SQLDataBase;mssqlserver;$DBName"}
+foreach($bkpItem in $bkpItems) {
+Enable-AzRecoveryServicesBackupProtection -Item $bkpItem -Policy $targetPolicy -VaultId $vault.ID
+}
+}
